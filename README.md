@@ -24,5 +24,5 @@ Para cambiar el modelo que realiza la predicción en la API, basta con cambiar
 
 `model=2`
 
-que está dentro de json_generator.py, por cualquier número del 0 al 2, siendo estos los modelos disponibles 
+que está dentro de json_generator.py, por cualquier número del 0 al 5, siendo estos los modelos disponibles 
 

@@ -8,6 +8,8 @@ Luego, instalar los requisitos con
 
 `pip install -r requirements.txt`
 
+Descargar la carpeta de modelos de [AQUI](https://drive.google.com/drive/folders/1IKw8qrmYGHUj6GkiA7MI7nRCdyEILxxp?usp=sharing) y colocarla en la carpeta raiz del repositorio. 
+
 Para levantar la api, correr 
 
 `python3 app.py`
@@ -23,3 +25,4 @@ Para cambiar el modelo que realiza la predicción en la API, basta con cambiar
 `model=2`
 
 que está dentro de json_generator.py, por cualquier número del 0 al 2, siendo estos los modelos disponibles 
+

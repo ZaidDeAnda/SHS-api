@@ -1,20 +1,22 @@
 import numpy as np
+
 import os
 import requests
 import json
-from models import models
 import random
+from pprint import pprint
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
 model=2
 
-GOOD_DATA_PATH="./datos_prueba_api/good/"
-BAD_DATA_PATH="./datos_prueba_api/bad/"
+GOOD_DATA_PATH="./testing_data/good/"
+BAD_DATA_PATH="./testing_data/bad/"
 
 GOOD_DATA_FILES = [GOOD_DATA_PATH + X for X in os.listdir(GOOD_DATA_PATH)]
 BAD_DATA_FILES = [BAD_DATA_PATH + X for X in os.listdir(BAD_DATA_PATH)]
 
-good_or_bad=random.randint(0,1)
+good_or_bad=random.randint(0, 1)
 
 if good_or_bad == 1:
     file_number=len(GOOD_DATA_FILES)
@@ -28,13 +30,15 @@ else:
 data=np.genfromtxt(file, delimiter="\n")
 data=data.tolist()
 
-model=str(model)
-url="http://localhost:6000/predict/"+model
+url = f'http://localhost:5000/predict/{model}'
 
 data_json={
-     "data":data
+     "data": data
 }
 
 print(f"Se mandó un archivo de la carpeta {name}")
 
 res = requests.post(url, json=data_json)
+res_json = res.json()
+
+pprint(res_json)

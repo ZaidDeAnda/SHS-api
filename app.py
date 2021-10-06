@@ -1,23 +1,47 @@
-from flask import Flask, request
-from flask.json import jsonify
+from flask import Flask
+from flask import request
+from flask import jsonify
 import numpy as np
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
+from utils.models import load_model_folder
+from utils.config_loader import load_config
+
+
+meta = load_config()
+models = load_model_folder(meta['models_folder'])
 
 app = Flask(__name__)
 
-from models import models
 
-@app.route("/predict/<int:modelo>", methods=['POST'])
-def predict(modelo):
-    """ Le pasas un json cuyo único elemento es la lista de los valores del ECG
-    """
-    model=models[modelo]
-    if model:
-        data=request.json["data"]
-        prediction=model.predict(np.reshape(data, (1,1800))) 
-    print(prediction[0][0])
-    return str(prediction[0][0])
+@app.route('/')
+def hello_world():
+    """Test route."""
+
+    response = {
+        'message': 'Hello World!'
+    }
+
+    return jsonify(response), 200
+
+
+@app.route('/predict/<int:modelo_id>', methods=['POST'])
+def predict(modelo_id):
+    """Predict route."""
+
+    if modelo_id not in models.keys():
+        return jsonify({'message': 'Modelo não encontrado'}), 404
+    
+    model = models[modelo_id]
+
+    data = request.json['data']
+    prediction = model.predict(np.reshape(data, (1, 1800)))
+    
+    response = {
+        'prediction': float(prediction[0][0])
+    }
+
+    return jsonify(response), 200
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=6000)
+    app.run(debug=True, port=5000)
